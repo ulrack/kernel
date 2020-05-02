@@ -157,6 +157,16 @@ class CacheManager implements CacheManagerInterface
     }
 
     /**
+     * Reset the registered caches.
+     *
+     * @return void
+     */
+    public function resetRegisteredCaches(): void
+    {
+        $this->registeredCaches = [];
+    }
+
+    /**
      * Destructor.
      *
      * Writes all caches.

@@ -30,6 +30,7 @@ class CacheManagerTest extends TestCase
      * @covers ::getCacheRegistry
      * @covers ::getCache
      * @covers ::registerStorageToCache
+     * @covers ::resetRegisteredCaches
      * @covers ::__destruct
      */
     public function testManager(): void
@@ -79,6 +80,8 @@ class CacheManagerTest extends TestCase
             CacheInterface::class,
             $cache
         );
+
+        $subject->resetRegisteredCaches();
 
         $subject->registerStorageToCache(
             'foo',

@@ -44,4 +44,11 @@ interface CacheManagerInterface extends KernelManagerInterface
         string $cacheKey,
         StorageInterface $storage
     ): void;
+
+    /**
+     * Reset the registered caches.
+     *
+     * @return void
+     */
+    public function resetRegisteredCaches(): void;
 }
