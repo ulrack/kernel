@@ -1,6 +1,6 @@
 {
     "$schema": "service.factory.hook.schema.json",
     "class": "\\Ulrack\\Kernel\\Factory\\Hook\\EnvironmentVariableHook",
-    "sortOrder": "100",
+    "sortOrder": 100,
     "key": "parameters"
 }
