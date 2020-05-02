@@ -1,0 +1,9 @@
+{
+    "$schema": "translation.schema.json",
+    "left": [
+        "application\/json"
+    ],
+    "right": [
+        "json"
+    ]
+}

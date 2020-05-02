@@ -1,0 +1,5 @@
+{
+    "$schema": "configuration.schema.json",
+    "key": "codec",
+    "location": "configuration/codec"
+}

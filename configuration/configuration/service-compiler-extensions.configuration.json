@@ -1,0 +1,5 @@
+{
+    "$schema": "configuration.schema.json",
+    "key": "service-compiler-extensions",
+    "location": "configuration/service-compiler-extensions"
+}

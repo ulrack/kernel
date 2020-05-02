@@ -1,0 +1,5 @@
+{
+    "$schema": "configuration.schema.json",
+    "key": "extension-to-mime",
+    "location": "configuration/extension-to-mime"
+}

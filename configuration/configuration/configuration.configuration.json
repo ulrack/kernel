@@ -1,0 +1,5 @@
+{
+    "$schema": "configuration.schema.json",
+    "key": "configuration",
+    "location": "configuration/configuration"
+}

@@ -1,0 +1,5 @@
+{
+    "$schema": "configuration.schema.json",
+    "key": "service-compiler-hooks",
+    "location": "configuration/service-compiler-hooks"
+}

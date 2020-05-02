@@ -1,0 +1,12 @@
+{
+    "$schema": "translation.schema.json",
+    "left": [
+        "text\/vnd.yaml",
+        "text\/yaml",
+        "text\/x-yaml",
+        "application\/x-yaml"
+    ],
+    "right": [
+        "yaml"
+    ]
+}

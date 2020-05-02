@@ -1,0 +1,8 @@
+{
+    "$schema": "codec.schema.json",
+    "type": "json",
+    "class": "\\GrizzIt\\Codec\\Component\\JsonCodec",
+    "parameters": {
+        "decodeAssociative": true
+    }
+}
