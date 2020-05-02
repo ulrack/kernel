@@ -209,10 +209,7 @@ class ServiceManager implements ServiceManagerInterface
     {
         /** @var ServicesFactory $serviceFactory */
         $servicesFactory = $this->serviceFactory->getExtension('services');
-        $servicesFactory->registerObject(
-            sprintf('services.%s', $key),
-            $service
-        );
+        $servicesFactory->registerObject($key, $service);
     }
 
     /**
