@@ -11,9 +11,17 @@ use GrizzIt\Storage\Common\StorageInterface;
 use Ulrack\Kernel\Common\KernelManagerInterface;
 use GrizzIt\ObjectFactory\Common\ClassAnalyserInterface;
 use GrizzIt\ObjectFactory\Common\ObjectFactoryInterface;
+use GrizzIt\ObjectFactory\Common\MethodReflectorInterface;
 
 interface ObjectManagerInterface extends KernelManagerInterface
 {
+    /**
+     * Retrieves the method reflector.
+     *
+     * @return MethodReflectorInterface
+     */
+    public function getMethodReflector(): MethodReflectorInterface;
+
     /**
      * Retrieves the object factory.
      *

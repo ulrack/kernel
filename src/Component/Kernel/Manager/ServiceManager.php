@@ -157,7 +157,8 @@ class ServiceManager implements ServiceManagerInterface
         $this->serviceFactory = new ServiceFactory(
             $this->serviceCompiler,
             $this->objectManager->getObjectFactory(),
-            $this->objectManager->getClassAnalyser()
+            $this->objectManager->getClassAnalyser(),
+            $this->objectManager->getMethodReflector()
         );
 
         foreach ($configRegistry->get('service-factory-extensions') as $extension) {

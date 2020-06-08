@@ -9,9 +9,10 @@ namespace Ulrack\Kernel\Tests\Component\Kernel\Manager;
 
 use PHPUnit\Framework\TestCase;
 use GrizzIt\Storage\Common\StorageInterface;
-use Ulrack\Kernel\Component\Kernel\Manager\ObjectManager;
 use GrizzIt\ObjectFactory\Common\ClassAnalyserInterface;
 use GrizzIt\ObjectFactory\Common\ObjectFactoryInterface;
+use Ulrack\Kernel\Component\Kernel\Manager\ObjectManager;
+use GrizzIt\ObjectFactory\Common\MethodReflectorInterface;
 
 /**
  * @coversDefaultClass \Ulrack\Kernel\Component\Kernel\Manager\ObjectManager
@@ -26,6 +27,7 @@ class ObjectManagerTest extends TestCase
      * @covers ::getObjectFactory
      * @covers ::getClassAnalyser
      * @covers ::getAnalysisStorage
+     * @covers ::getMethodReflector
      */
     public function testManager(): void
     {
@@ -41,6 +43,11 @@ class ObjectManagerTest extends TestCase
         $this->assertInstanceOf(
             ClassAnalyserInterface::class,
             $subject->getClassAnalyser()
+        );
+
+        $this->assertInstanceOf(
+            MethodReflectorInterface::class,
+            $subject->getMethodReflector()
         );
 
         $this->assertSame($analysisStorage, $subject->getAnalysisStorage());

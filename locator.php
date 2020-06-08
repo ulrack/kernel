@@ -7,4 +7,4 @@
 
 use GrizzIt\Configuration\Component\Configuration\PackageLocator;
 
-PackageLocator::registerLocation(__DIR__);
+PackageLocator::registerLocation(__DIR__, 'Ulrack_Kernel');

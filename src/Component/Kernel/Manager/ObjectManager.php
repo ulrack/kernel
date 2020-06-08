@@ -9,10 +9,12 @@ namespace Ulrack\Kernel\Component\Kernel\Manager;
 
 use GrizzIt\Storage\Common\StorageInterface;
 use GrizzIt\ObjectFactory\Factory\ObjectFactory;
-use Ulrack\Kernel\Common\Manager\ObjectManagerInterface;
 use GrizzIt\ObjectFactory\Common\ClassAnalyserInterface;
 use GrizzIt\ObjectFactory\Common\ObjectFactoryInterface;
+use Ulrack\Kernel\Common\Manager\ObjectManagerInterface;
+use GrizzIt\ObjectFactory\Common\MethodReflectorInterface;
 use GrizzIt\ObjectFactory\Component\Analyser\ClassAnalyser;
+use GrizzIt\ObjectFactory\Component\Reflector\MethodReflector;
 
 class ObjectManager implements ObjectManagerInterface
 {
@@ -38,6 +40,13 @@ class ObjectManager implements ObjectManagerInterface
     private $objectFactory;
 
     /**
+     * Contains the method reflector.
+     *
+     * @var MethodReflectorInterface
+     */
+    private $methodReflector;
+
+    /**
      * Constructor.
      *
      * @param ObjectFactoryInterface $objectFactory
@@ -54,8 +63,22 @@ class ObjectManager implements ObjectManagerInterface
      */
     public function boot(): void
     {
-        $this->classAnalyser = new ClassAnalyser($this->analysisStorage);
+        $this->methodReflector = new MethodReflector($this->analysisStorage);
+        $this->classAnalyser = new ClassAnalyser(
+            $this->analysisStorage,
+            $this->methodReflector
+        );
         $this->objectFactory = new ObjectFactory($this->classAnalyser);
+    }
+
+    /**
+     * Retrieves the method reflector.
+     *
+     * @return MethodReflectorInterface
+     */
+    public function getMethodReflector(): MethodReflectorInterface
+    {
+        return $this->methodReflector;
     }
 
     /**

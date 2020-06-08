@@ -13,11 +13,11 @@
         "php": "^7.2",
         "ext-json": "*",
         "grizz-it/cache": "^1.0",
-        "grizz-it/configuration": "^1.0",
+        "grizz-it/configuration": "^1.1",
         "grizz-it/enum": "^1.0",
         "grizz-it/translator": "^1.0",
         "ulrack/json-schema": "^1.0",
-        "ulrack/services": "^2.0"
+        "ulrack/services": "^3.0"
     },
     "authors": [
         {
