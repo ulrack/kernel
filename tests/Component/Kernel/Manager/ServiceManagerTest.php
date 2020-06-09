@@ -72,27 +72,41 @@ class ServiceManagerTest extends TestCase
             ->method('get')
             ->withConsecutive(
                 ['service-compiler-extensions'],
-                ['service-compiler-hooks'],
                 ['parameters'],
                 ['preferences'],
                 ['services'],
+                ['service-compiler-hooks'],
                 ['service-factory-extensions'],
                 ['service-factory-hooks']
             )->willReturnOnConsecutiveCalls(
-                [[
-                    'schema' => ['foo' => 'bar'],
-                    'key' => 'compiler-extension',
-                    'class' => 'foo',
-                    'sortOrder' => 1
-                ]],
+                [
+                    [
+                        'schema' => ['foo' => 'bar'],
+                        'key' => 'parameters',
+                        'class' => 'foo',
+                        'sortOrder' => 1
+                    ],
+                    [
+                        'schema' => ['foo' => 'bar'],
+                        'key' => 'preferences',
+                        'class' => 'foo',
+                        'sortOrder' => 1
+                    ],
+                    [
+                        'schema' => ['foo' => 'bar'],
+                        'key' => 'services',
+                        'class' => 'foo',
+                        'sortOrder' => 1
+                    ]
+                ],
+                [['parameters' => []]],
+                [['preferences' => []]],
+                [['services' => []]],
                 [[
                     'key' => 'compiler-hook',
                     'class' => 'bar',
                     'sortOrder' => 2
                 ]],
-                [['parameters' => []]],
-                [['preferences' => []]],
-                [['services' => []]],
                 [[
                     'key' => 'services',
                     'class' => ServicesFactory::class,

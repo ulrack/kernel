@@ -127,6 +127,11 @@ class ServiceManager implements ServiceManagerInterface
                     $extensionValidator,
                     $extension['parameters'] ?? []
                 );
+
+                $this->registerConfiguration(
+                    $extension['key'],
+                    $configRegistry->get($extension['key'])
+                );
             }
 
             foreach ($configRegistry->get('service-compiler-hooks') as $hook) {
@@ -137,21 +142,6 @@ class ServiceManager implements ServiceManagerInterface
                     $hook['parameters'] ?? []
                 );
             }
-
-            $this->registerConfiguration(
-                'parameters',
-                $configRegistry->get('parameters')
-            );
-
-            $this->registerConfiguration(
-                'preferences',
-                $configRegistry->get('preferences')
-            );
-
-            $this->registerConfiguration(
-                'services',
-                $configRegistry->get('services')
-            );
         }
 
         $this->serviceFactory = new ServiceFactory(

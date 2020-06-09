@@ -5,6 +5,7 @@
  * See LICENSE for license details.
  */
 
+use Ulrack\Kernel\Common\UlrackKernelPackage;
 use GrizzIt\Configuration\Component\Configuration\PackageLocator;
 
-PackageLocator::registerLocation(__DIR__, 'Ulrack_Kernel');
+PackageLocator::registerLocation(__DIR__, UlrackKernelPackage::PACKAGE_NAME);
