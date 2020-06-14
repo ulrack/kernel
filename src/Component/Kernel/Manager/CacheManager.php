@@ -88,6 +88,16 @@ class CacheManager implements CacheManagerInterface
     }
 
     /**
+     * Retrieves the cache file system.
+     *
+     * @return FileSystemInterface
+     */
+    public function getCacheFileSystem(): FileSystemInterface
+    {
+        return $this->cacheFileSystem;
+    }
+
+    /**
      * Retrieves the cache registry.
      *
      * @return CacheRegistryInterface

@@ -8,12 +8,20 @@
 namespace Ulrack\Kernel\Common\Manager;
 
 use GrizzIt\Cache\Common\CacheInterface;
+use GrizzIt\Vfs\Common\FileSystemInterface;
 use GrizzIt\Storage\Common\StorageInterface;
-use Ulrack\Kernel\Common\KernelManagerInterface;
 use GrizzIt\Cache\Common\CacheRegistryInterface;
+use Ulrack\Kernel\Common\KernelManagerInterface;
 
 interface CacheManagerInterface extends KernelManagerInterface
 {
+    /**
+     * Retrieves the cache file system.
+     *
+     * @return FileSystemInterface
+     */
+    public function getCacheFileSystem(): FileSystemInterface;
+
     /**
      * Retrieves the cache registry.
      *

@@ -31,6 +31,7 @@ class CacheManagerTest extends TestCase
      * @covers ::getCache
      * @covers ::registerStorageToCache
      * @covers ::resetRegisteredCaches
+     * @covers ::getCacheFileSystem
      * @covers ::__destruct
      */
     public function testManager(): void
@@ -68,6 +69,11 @@ class CacheManagerTest extends TestCase
 
         $subject = new CacheManager($resourceManager);
         $subject->boot();
+
+        $this->assertEquals(
+            $cacheFileSystem,
+            $subject->getCacheFileSystem()
+        );
 
         $this->assertInstanceOf(
             CacheRegistryInterface::class,
