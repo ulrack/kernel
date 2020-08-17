@@ -25,15 +25,37 @@ class EnvironmentVariableHook extends AbstractServiceFactoryHook
         $return,
         array $parameters = []
     ): array {
-        if (preg_match('/\\$\\{([\\w]+)\\}/', $return, $matches)) {
-            if (isset($matches[1])) {
-                $variable = getenv($matches[1], true) ?: getenv($matches[1]);
-                if ($variable !== false) {
-                    $return = $variable;
+        return parent::postCreate(
+            $serviceKey,
+            $this->parseEnvironmentVariables($return),
+            $parameters
+        );
+    }
+
+    /**
+     * Find and replace environment variables.
+     *
+     * @param mixed $return
+     *
+     * @return mixed
+     */
+    private function parseEnvironmentVariables($return)
+    {
+        if (is_array($return)) {
+            foreach ($return as $key => $variable) {
+                $return[$key] = $this->parseEnvironmentVariables($variable);
+            }
+        } elseif (is_string($return)) {
+            if (preg_match('/\\$\\{([\\w]+)\\}/', $return, $matches)) {
+                if (isset($matches[1])) {
+                    $variable = getenv($matches[1], true) ?: getenv($matches[1]);
+                    if ($variable !== false) {
+                        $return = $variable;
+                    }
                 }
             }
         }
 
-        return parent::postCreate($serviceKey, $return, $parameters);
+        return $return;
     }
 }

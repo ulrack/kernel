@@ -16,18 +16,18 @@ use Ulrack\Kernel\Factory\Hook\EnvironmentVariableHook;
 class EnvironmentVariableHookTest extends TestCase
 {
     /**
-     * @param array $source
-     * @param string $service
+     * @param mixed $service
      * @param string $expected
      *
      * @return void
      *
      * @covers ::postCreate
+     * @covers ::parseEnvironmentVariables
      *
      * @dataProvider hookProvider
      */
     public function testHook(
-        string $service,
+        $service,
         array $expected
     ): void {
         $subject = new EnvironmentVariableHook(
@@ -58,6 +58,14 @@ class EnvironmentVariableHookTest extends TestCase
                 [
                     'serviceKey' => 'foo',
                     'return' => 'bar',
+                    'parameters' => []
+                ]
+            ],
+            [
+                ['baz' => '${FOO}'],
+                [
+                    'serviceKey' => 'foo',
+                    'return' => ['baz' => 'bar'],
                     'parameters' => []
                 ]
             ],
