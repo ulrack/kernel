@@ -25,7 +25,7 @@
     "definitions": {
         "classDeclaration": {
             "type": "string",
-            "pattern": "^(\\\\[A-z]+)+$"
+            "pattern": "^(\\\\[A-z0-9]+)+$"
         },
         "identifierDeclaration": {
             "type": "string",
