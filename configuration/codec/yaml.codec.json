@@ -1,5 +1,0 @@
-{
-    "$schema": "codec.schema.json",
-    "type": "yaml",
-    "class": "\\GrizzIt\\Codec\\Component\\YamlCodec"
-}
