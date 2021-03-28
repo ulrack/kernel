@@ -8,11 +8,13 @@ example an environment variable is being emited to the user. To do this, first
 follow the following guide to support autoloading configuration:
 [GrizzIT Configuration - Adding a locator](https://github.com/grizz-it/configuration/blob/master/docs/usage/adding-a-locator.md).
 
-When this is done, create the file `configuration/parameters/my-parameters.json`.
+When this is done, create the file `configuration/services/my-services.json`.
 The contents of the file for this example will be:
 ```json
 {
-    "my-parameter": "${SHELL}"
+    "parameters": {
+        "my-parameter": "${parameters.SHELL}"
+    }
 }
 ```
 

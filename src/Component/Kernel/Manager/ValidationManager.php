@@ -9,10 +9,10 @@ namespace Ulrack\Kernel\Component\Kernel\Manager;
 
 use GrizzIt\Storage\Common\StorageInterface;
 use GrizzIt\Configuration\Common\RegistryInterface;
-use Ulrack\JsonSchema\Factory\SchemaValidatorFactory;
-use Ulrack\JsonSchema\Component\Storage\StorageManager;
+use GrizzIt\JsonSchema\Factory\SchemaValidatorFactory;
+use GrizzIt\JsonSchema\Component\Storage\StorageManager;
 use Ulrack\Kernel\Common\Manager\ValidationManagerInterface;
-use Ulrack\JsonSchema\Common\SchemaValidatorFactoryInterface;
+use GrizzIt\JsonSchema\Common\SchemaValidatorFactoryInterface;
 
 class ValidationManager implements ValidationManagerInterface
 {
@@ -21,14 +21,14 @@ class ValidationManager implements ValidationManagerInterface
      *
      * @var StorageInterface
      */
-    private $schemaStorage;
+    private StorageInterface $schemaStorage;
 
     /**
      * Contains the validator factory.
      *
-     * @var SchemaValidatorFactoryInterface
+     * @var SchemaValidatorFactoryInterface|null
      */
-    private $validatorFactory;
+    private ?SchemaValidatorFactoryInterface $validatorFactory;
 
     /**
      * Constructor.
@@ -61,9 +61,8 @@ class ValidationManager implements ValidationManagerInterface
      *
      * @return void
      */
-    public function initialize(
-        RegistryInterface $configRegistry
-    ): void {
+    public function initialize(RegistryInterface $configRegistry): void
+    {
         foreach ($configRegistry->get('schema') as $schema) {
             if (isset($schema['$id'])) {
                 $this->schemaStorage->set($schema['$id'], $schema);

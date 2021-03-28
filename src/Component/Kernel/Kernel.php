@@ -25,9 +25,8 @@ class Kernel implements KernelInterface
      *
      * @param CoreManagerInterface $coreManager
      */
-    public function __construct(
-        CoreManagerInterface $coreManager
-    ) {
+    public function __construct(CoreManagerInterface $coreManager)
+    {
         $this->coreManager = $coreManager;
     }
 

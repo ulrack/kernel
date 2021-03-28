@@ -1,5 +1,0 @@
-{
-    "$schema": "configuration.schema.json",
-    "key": "parameters",
-    "location": "configuration/parameters"
-}

@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 use GrizzIt\Storage\Common\StorageInterface;
 use GrizzIt\Configuration\Common\RegistryInterface;
 use Ulrack\Kernel\Component\Kernel\Manager\ValidationManager;
-use Ulrack\JsonSchema\Common\SchemaValidatorFactoryInterface;
+use GrizzIt\JsonSchema\Common\SchemaValidatorFactoryInterface;
 
 /**
  * @coversDefaultClass \Ulrack\Kernel\Component\Kernel\Manager\ValidationManager

@@ -28,35 +28,35 @@ class CacheManager implements CacheManagerInterface
      *
      * @var ResourceManagerInterface
      */
-    private $resourceManager;
+    private ResourceManagerInterface $resourceManager;
 
     /**
      * Contains the cache registry.
      *
-     * @var CacheRegistryInterface
+     * @var CacheRegistryInterface|null
      */
-    private $cacheRegistry;
+    private ?CacheRegistryInterface $cacheRegistry;
 
     /**
      * Contains the cache file system.
      *
-     * @var FileSystemInterface
+     * @var FileSystemInterface|null
      */
-    private $cacheFileSystem;
+    private ?FileSystemInterface $cacheFileSystem;
 
     /**
      * Contains the active caches.
      *
      * @var string[]
      */
-    private $activeCaches = [];
+    private array $activeCaches = [];
 
     /**
      * Contains the registered caches.
      *
      * @var StorageInterface[][]
      */
-    private $registeredCaches = [];
+    private array $registeredCaches = [];
 
     /**
      * Constructor.

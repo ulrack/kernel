@@ -19,7 +19,7 @@ class SchemaStorage extends ObjectStorage
      *
      * @return void
      */
-    public function set($key, $data): void
+    public function set(string | int $key, mixed $data): void
     {
         parent::set($key, json_decode(json_encode($data)));
     }

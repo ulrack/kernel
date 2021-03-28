@@ -12,9 +12,9 @@ use GrizzIt\Codec\Common\CodecRegistryInterface;
 use GrizzIt\Translator\Component\ArrayTranslator;
 use GrizzIt\Codec\Component\Registry\CodecRegistry;
 use GrizzIt\Configuration\Common\RegistryInterface;
+use GrizzIt\Translator\Common\ArrayTranslatorInterface;
 use Ulrack\Kernel\Common\Manager\CodecManagerInterface;
 use Ulrack\Kernel\Common\Manager\ObjectManagerInterface;
-use GrizzIt\Translator\Common\ArrayTranslatorInterface;
 
 class CodecManager implements CodecManagerInterface
 {
@@ -23,28 +23,28 @@ class CodecManager implements CodecManagerInterface
      *
      * @var ObjectManagerInterface
      */
-    private $objectManager;
+    private ObjectManagerInterface $objectManager;
 
     /**
      * Contains the codec registry.
      *
      * @var CodecRegistryInterface
      */
-    private $codecRegistry;
+    private CodecRegistryInterface $codecRegistry;
 
     /**
      * Contains the extension to mime translator.
      *
      * @var ArrayTranslatorInterface
      */
-    private $extensionToMime;
+    private ArrayTranslatorInterface $extensionToMime;
 
     /**
      * Contains the mime to codec translator.
      *
      * @var ArrayTranslatorInterface
      */
-    private $mimeToCodec;
+    private ArrayTranslatorInterface $mimeToCodec;
 
     /**
      * Constructor.

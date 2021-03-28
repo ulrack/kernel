@@ -17,6 +17,10 @@
                     "abstract": {
                         "type": "boolean",
                         "default": false
+                    },
+                    "cache": {
+                        "type": "boolean",
+                        "default": true
                     }
                 },
                 "required": ["class"]
@@ -33,6 +37,10 @@
                     "abstract": {
                         "type": "boolean",
                         "default": false
+                    },
+                    "cache": {
+                        "type": "boolean",
+                        "default": true
                     }
                 },
                 "required": ["parent"]

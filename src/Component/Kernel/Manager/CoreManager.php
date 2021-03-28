@@ -10,9 +10,9 @@ namespace Ulrack\Kernel\Component\Kernel\Manager;
 use GrizzIt\Storage\Component\ObjectStorage;
 use Ulrack\Kernel\Component\Storage\SchemaStorage;
 use Ulrack\Kernel\Common\Manager\CoreManagerInterface;
-use Ulrack\Kernel\Common\Manager\ServiceManagerInterface;
 use Ulrack\Kernel\Component\Kernel\Manager\CacheManager;
 use Ulrack\Kernel\Component\Kernel\Manager\CodecManager;
+use Ulrack\Kernel\Common\Manager\ServiceManagerInterface;
 use Ulrack\Kernel\Component\Kernel\Manager\ObjectManager;
 use Ulrack\Kernel\Component\Kernel\Manager\ResourceManager;
 use Ulrack\Kernel\Component\Kernel\Manager\ConfigurationManager;
@@ -118,14 +118,12 @@ class CoreManager implements CoreManagerInterface
         );
 
         $configurationManager->boot();
-
         $this->registerServices(
             [
                 'core.object.manager' => $objectManager,
                 'core.codec.manager' => $codecManager,
                 'core.resource.manager' => $resourceManager,
                 'core.cache.manager' => $cacheManager,
-                'core.validation.manager' => $validationManager,
                 'core.service.manager' => $this->serviceManager,
                 'core.configuration.manager' => $configurationManager,
                 'core.object.manager' => $objectManager,

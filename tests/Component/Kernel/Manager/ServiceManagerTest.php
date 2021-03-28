@@ -10,14 +10,13 @@ namespace Ulrack\Kernel\Tests\Component\Kernel\Manager;
 use PHPUnit\Framework\TestCase;
 use GrizzIt\Storage\Common\StorageInterface;
 use GrizzIt\Configuration\Common\RegistryInterface;
-use Ulrack\Services\Common\ServiceFactoryInterface;
-use Ulrack\Services\Common\ServiceCompilerInterface;
-use Ulrack\Kernel\Common\Manager\ObjectManagerInterface;
-use Ulrack\Services\Factory\Extension\ServicesFactory;
-use Ulrack\Services\Component\Compiler\ServiceCompiler;
 use GrizzIt\ObjectFactory\Common\ObjectFactoryInterface;
+use GrizzIt\Services\Component\Compiler\ServiceCompiler;
+use Ulrack\Kernel\Common\Manager\ObjectManagerInterface;
 use Ulrack\Kernel\Component\Kernel\Manager\ServiceManager;
+use GrizzIt\Services\Common\Factory\ServiceFactoryInterface;
 use Ulrack\Kernel\Common\Manager\ValidationManagerInterface;
+use GrizzIt\Services\Common\Compiler\ServiceCompilerInterface;
 
 /**
  * @coversDefaultClass \Ulrack\Kernel\Component\Kernel\Manager\ServiceManager
@@ -30,7 +29,6 @@ class ServiceManagerTest extends TestCase
      * @covers ::__construct
      * @covers ::boot
      * @covers ::initialize
-     * @covers ::registerConfiguration
      * @covers ::registerService
      * @covers ::getServiceCompiler
      * @covers ::getServiceFactory
@@ -39,87 +37,46 @@ class ServiceManagerTest extends TestCase
     {
         $objectManager = $this->createMock(ObjectManagerInterface::class);
         $serviceStorage = $this->createMock(StorageInterface::class);
-
+        $objectFactory = $this->createMock(ObjectFactoryInterface::class);
         $subject = new ServiceManager(
             $objectManager,
             $serviceStorage,
             $this->createMock(ValidationManagerInterface::class)
         );
 
-        $objectFactory = $this->createMock(ObjectFactoryInterface::class);
-        $objectFactory->method('create')
-            ->with(ServicesFactory::class)
-            ->willReturn($this->createMock(ServicesFactory::class));
-
-        $objectManager->expects(static::exactly(2))
+        $subject->boot();
+        $objectManager->expects(static::once())
             ->method('getObjectFactory')
             ->willReturn($objectFactory);
 
-        $subject->boot();
         $configRegistry = $this->createMock(RegistryInterface::class);
 
-        $serviceStorage->expects(static::exactly(2))
+        $serviceStorage->expects(static::exactly(3))
             ->method('has')
             ->with(ServiceCompiler::STORAGE_COMPILED_KEY)
             ->willReturn(true);
 
-        $serviceStorage->expects(static::exactly(2))
+        $serviceStorage->expects(static::exactly(3))
             ->method('get')
             ->with(ServiceCompiler::STORAGE_COMPILED_KEY)
             ->willReturnOnConsecutiveCalls(false);
 
-        $configRegistry->expects(static::exactly(7))
+        $configRegistry->expects(static::exactly(2))
             ->method('get')
-            ->withConsecutive(
-                ['service-compiler-extensions'],
-                ['parameters'],
-                ['preferences'],
-                ['services'],
-                ['service-compiler-hooks'],
-                ['service-factory-extensions'],
-                ['service-factory-hooks']
-            )->willReturnOnConsecutiveCalls(
+            ->with('services')
+            ->willReturn([
                 [
-                    [
-                        'schema' => ['foo' => 'bar'],
-                        'key' => 'parameters',
-                        'class' => 'foo',
-                        'sortOrder' => 1
-                    ],
-                    [
-                        'schema' => ['foo' => 'bar'],
-                        'key' => 'preferences',
-                        'class' => 'foo',
-                        'sortOrder' => 1
-                    ],
-                    [
-                        'schema' => ['foo' => 'bar'],
-                        'key' => 'services',
-                        'class' => 'foo',
-                        'sortOrder' => 1
+                    'triggers' => [
+                        'core.service.compilers' => [],
+                        'core.service.validators' => [],
+                        'core.service.factories' => [],
+                        'core.service.hooks' => []
                     ]
-                ],
-                [['parameters' => []]],
-                [['preferences' => []]],
-                [['services' => []]],
-                [[
-                    'key' => 'compiler-hook',
-                    'class' => 'bar',
-                    'sortOrder' => 2
-                ]],
-                [[
-                    'key' => 'services',
-                    'class' => ServicesFactory::class,
-                    'sortOrder' => 1
-                ]],
-                [[
-                    'key' => 'factory-hook',
-                    'class' => 'qux',
-                    'sortOrder' => 2
-                ]]
-            );
+                ]
+            ]);
 
         $subject->initialize($configRegistry);
+
         $subject->registerService('foo', []);
         $this->assertInstanceOf(
             ServiceCompilerInterface::class,

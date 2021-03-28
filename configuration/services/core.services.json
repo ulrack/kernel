@@ -1,0 +1,8 @@
+{
+    "triggers": {
+        "core.service.compilers": {},
+        "core.service.validators": {},
+        "core.service.factories": {},
+        "core.service.hooks": {}
+    }
+}

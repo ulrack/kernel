@@ -7,19 +7,24 @@
 
 namespace Ulrack\Kernel\Component\Kernel\Manager;
 
-use Ulrack\Services\Factory\ServiceFactory;
+use GrizzIt\Services\Factory\ServiceFactory;
 use GrizzIt\Storage\Common\StorageInterface;
 use GrizzIt\ObjectFactory\Factory\ObjectFactory;
 use GrizzIt\Configuration\Common\RegistryInterface;
-use Ulrack\Services\Common\ServiceFactoryInterface;
-use Ulrack\Services\Common\ServiceCompilerInterface;
-use Ulrack\Services\Common\ServiceRegistryInterface;
+use GrizzIt\Services\Factory\Hook\TriggerFactoryHook;
+use GrizzIt\Services\Component\Compiler\ServiceCompiler;
 use Ulrack\Kernel\Common\Manager\ObjectManagerInterface;
-use Ulrack\Services\Factory\Extension\ServicesFactory;
 use Ulrack\Kernel\Common\Manager\ServiceManagerInterface;
-use Ulrack\Services\Component\Compiler\ServiceCompiler;
-use Ulrack\Services\Component\Registry\ServiceRegistry;
+use GrizzIt\Services\Common\Factory\ServiceFactoryInterface;
 use Ulrack\Kernel\Common\Manager\ValidationManagerInterface;
+use Ulrack\Kernel\Component\Compiler\WrappedServiceCompiler;
+use GrizzIt\Services\Common\Compiler\ServiceCompilerInterface;
+use GrizzIt\Services\Factory\Extension\ServiceFactoryExtension;
+use GrizzIt\Services\Factory\Extension\TriggerFactoryExtension;
+use GrizzIt\Services\Factory\Extension\ParameterFactoryExtension;
+use GrizzIt\Services\Factory\Extension\InvocationFactoryExtension;
+use GrizzIt\Services\Component\Compiler\Extension\ServiceCompilerExtension;
+use GrizzIt\Services\Component\Compiler\Extension\TriggerCompilerExtension;
 
 class ServiceManager implements ServiceManagerInterface
 {
@@ -28,42 +33,35 @@ class ServiceManager implements ServiceManagerInterface
      *
      * @var ServiceCompilerInterface
      */
-    private $serviceCompiler;
+    private ServiceCompilerInterface $serviceCompiler;
 
     /**
      * Contains the service factory.
      *
      * @var ServiceFactoryInterface
      */
-    private $serviceFactory;
-
-    /**
-     * Contains the object manager.
-     *
-     * @var ObjectManagerInterface
-     */
-    private $objectManager;
+    private ServiceFactoryInterface $serviceFactory;
 
     /**
      * Contains the services storage.
      *
      * @var StorageInterface
      */
-    private $serviceStorage;
-
-    /**
-     * Contains the validation manager.
-     *
-     * @var ValidationManagerInterface
-     */
-    private $validationManager;
+    private StorageInterface $serviceStorage;
 
     /**
      * Contains the service registry.
      *
      * @var ServiceRegistryInterface
      */
-    private $serviceRegistry;
+    private ServiceRegistryInterface $serviceRegistry;
+
+    /**
+     * Contains the validation manager.
+     *
+     * @var ValidationManagerInterface
+     */
+    private ValidationManagerInterface $validationManager;
 
     /**
      * Constructor.
@@ -89,12 +87,7 @@ class ServiceManager implements ServiceManagerInterface
      */
     public function boot(): void
     {
-        $this->serviceRegistry = new ServiceRegistry();
-        $this->serviceCompiler = new ServiceCompiler(
-            $this->serviceRegistry,
-            $this->serviceStorage,
-            $this->objectManager->getObjectFactory()
-        );
+        return;
     }
 
     /**
@@ -104,88 +97,91 @@ class ServiceManager implements ServiceManagerInterface
      *
      * @return void
      */
-    public function initialize(
-        RegistryInterface $configRegistry
-    ): void {
-        if (
-            !$this->serviceStorage->has(ServiceCompiler::STORAGE_COMPILED_KEY)
-            || $this->serviceStorage->get(
-                ServiceCompiler::STORAGE_COMPILED_KEY
-            ) === false
-        ) {
-            $validatorFactory = $this->validationManager->getValidatorFactory();
+    public function initialize(RegistryInterface $configRegistry): void
+    {
+        $triggerRecompile = !$this->serviceStorage->has(
+            ServiceCompiler::STORAGE_COMPILED_KEY
+        ) || $this->serviceStorage->get(
+            ServiceCompiler::STORAGE_COMPILED_KEY
+        ) === false;
 
-            foreach ($configRegistry->get('service-compiler-extensions') as $extension) {
-                $extensionValidator = $validatorFactory->create(
-                    json_decode(json_encode($extension['schema']))
-                );
-
-                $this->serviceCompiler->addExtension(
-                    $extension['key'],
-                    $extension['class'],
-                    $extension['sortOrder'],
-                    $extensionValidator,
-                    $extension['parameters'] ?? []
-                );
-
-                $this->registerConfiguration(
-                    $extension['key'],
-                    $configRegistry->get($extension['key'])
-                );
-            }
-
-            foreach ($configRegistry->get('service-compiler-hooks') as $hook) {
-                $this->serviceCompiler->addHook(
-                    $hook['key'],
-                    $hook['class'],
-                    $hook['sortOrder'],
-                    $hook['parameters'] ?? []
-                );
-            }
-        }
-
-        $this->serviceFactory = new ServiceFactory(
-            $this->serviceCompiler,
-            $this->objectManager->getObjectFactory(),
-            $this->objectManager->getClassAnalyser(),
-            $this->objectManager->getMethodReflector()
+        $serviceCompiler = new ServiceCompiler(
+            $configRegistry,
+            $this->serviceStorage
         );
 
-        foreach ($configRegistry->get('service-factory-extensions') as $extension) {
-            $this->serviceFactory->addExtension(
-                $extension['key'],
-                $extension['class'],
-                $extension['parameters'] ?? []
+        $this->serviceCompiler = new WrappedServiceCompiler($serviceCompiler);
+
+        if ($triggerRecompile) {
+            $serviceExtension = new ServiceCompilerExtension();
+            $triggerExtension = new TriggerCompilerExtension();
+            $this->serviceCompiler->addExtension($serviceExtension, 0);
+            $this->serviceCompiler->addExtension($triggerExtension, 0);
+        }
+
+        $this->serviceFactory = new ServiceFactory($this->serviceCompiler);
+        $this->serviceFactory->addExtension(
+            'parameters',
+            new ParameterFactoryExtension()
+        );
+
+        $this->serviceFactory->addExtension(
+            'services',
+            new ServiceFactoryExtension(
+                $this->objectManager->getObjectFactory()
+            )
+        );
+
+        $this->serviceFactory->addExtension(
+            'invocations',
+            new InvocationFactoryExtension(
+                $this->objectManager->getMethodReflector()
+            )
+        );
+
+        $this->serviceFactory->addExtension(
+            'triggers',
+            new TriggerFactoryExtension()
+        );
+
+        $this->serviceFactory->addHook(
+            'global',
+            new TriggerFactoryHook(
+                $this->serviceFactory->create('internal.service.registry')
+            ),
+            0
+        );
+
+        $this->serviceFactory->addInternalService(
+            'core.validation.manager',
+            $this->validationManager
+        );
+
+        $this->serviceFactory->addInternalService(
+            'core.service.compiler',
+            $this->serviceCompiler
+        );
+
+        $this->serviceFactory->addInternalService(
+            'core.service.factory',
+            $this->serviceFactory
+        );
+
+        if ($triggerRecompile) {
+            $this->serviceFactory->create('triggers.core.service.compilers');
+            $this->serviceFactory->create('triggers.core.service.validators');
+            $this->serviceStorage->set(
+                ServiceCompiler::STORAGE_COMPILED_KEY,
+                false
+            );
+
+            $this->serviceCompiler->compile()->setServiceRegistry(
+                $serviceCompiler->compile()
             );
         }
 
-        foreach ($configRegistry->get('service-factory-hooks') as $hook) {
-            $this->serviceFactory->addHook(
-                $hook['key'],
-                $hook['class'],
-                $hook['sortOrder'],
-                $hook['parameters'] ?? []
-            );
-        }
-    }
-
-    /**
-     * Registers the configuration to the service registry.
-     *
-     * @param string $scope
-     * @param array $definitions
-     *
-     * @return void
-     */
-    private function registerConfiguration(
-        string $scope,
-        array $definitions
-    ): void {
-        if (count($definitions) > 0) {
-            foreach (array_merge(...$definitions) as $key => $definition) {
-                $this->serviceRegistry->add($scope, $key, $definition);
-            }
-        }
+        $this->serviceFactory->create('triggers.core.service.factories');
+        $this->serviceFactory->create('triggers.core.service.hooks');
     }
 
     /**
@@ -196,11 +192,9 @@ class ServiceManager implements ServiceManagerInterface
      *
      * @return void
      */
-    public function registerService(string $key, $service): void
+    public function registerService(string $key, mixed $service): void
     {
-        /** @var ServicesFactory $serviceFactory */
-        $servicesFactory = $this->serviceFactory->getExtension('services');
-        $servicesFactory->registerService($key, $service);
+        $this->serviceFactory->addInternalService($key, $service);
     }
 
     /**

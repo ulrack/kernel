@@ -8,7 +8,7 @@
 namespace Ulrack\Kernel\Common\Manager;
 
 use Ulrack\Kernel\Common\InitializableKernelManagerInterface;
-use Ulrack\JsonSchema\Common\SchemaValidatorFactoryInterface;
+use GrizzIt\JsonSchema\Common\SchemaValidatorFactoryInterface;
 
 interface ValidationManagerInterface extends InitializableKernelManagerInterface
 {

@@ -122,7 +122,7 @@ class ConfigurationManagerTest extends TestCase
             ->method('getFileSystemNormalizer')
             ->willReturn($normalizer);
 
-        $driver->expects(static::exactly(6))
+        $driver->expects(static::exactly(3))
             ->method('connect')
             ->willReturn($fileSystem);
 

@@ -1,5 +1,0 @@
-{
-    "$schema": "configuration.schema.json",
-    "key": "service-factory-extensions",
-    "location": "configuration/service-factory-extensions"
-}

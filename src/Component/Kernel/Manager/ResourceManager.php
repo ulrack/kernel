@@ -9,10 +9,10 @@ namespace Ulrack\Kernel\Component\Kernel\Manager;
 
 use GrizzIt\Vfs\Common\FileSystemInterface;
 use GrizzIt\Vfs\Common\FileSystemDriverInterface;
-use Ulrack\Kernel\Common\Manager\CodecManagerInterface;
 use GrizzIt\Vfs\Component\Driver\LocalFileSystemDriver;
-use Ulrack\Kernel\Common\Manager\ResourceManagerInterface;
+use Ulrack\Kernel\Common\Manager\CodecManagerInterface;
 use GrizzIt\Vfs\Component\FileSystem\FileSystemNormalizer;
+use Ulrack\Kernel\Common\Manager\ResourceManagerInterface;
 
 class ResourceManager implements ResourceManagerInterface
 {
@@ -21,42 +21,42 @@ class ResourceManager implements ResourceManagerInterface
      *
      * @var CodecManagerInterface
      */
-    private $codecManager;
+    private CodecManagerInterface $codecManager;
 
     /**
      * Contains the file system driver for the system.
      *
      * @var FileSystemDriverInterface
      */
-    private $fileSystemDriver;
+    private FileSystemDriverInterface $fileSystemDriver;
 
     /**
      * Contains the root file system.
      *
      * @var FileSystemInterface
      */
-    private $rootFileSystem;
+    private FileSystemInterface $rootFileSystem;
 
     /**
      * Contains the var file system.
      *
      * @var FileSystemInterface
      */
-    private $varFileSystem;
+    private FileSystemInterface $varFileSystem;
 
     /**
      * Contains the root directory for the system.
      *
      * @var string
      */
-    private $systemRoot;
+    private string $systemRoot;
 
     /**
      * Contains the var directory for the system.
      *
      * @var string
      */
-    private $varDirectory;
+    private string $varDirectory;
 
     /**
      * Constructor.

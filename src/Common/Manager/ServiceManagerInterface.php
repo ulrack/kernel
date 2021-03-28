@@ -7,9 +7,9 @@
 
 namespace Ulrack\Kernel\Common\Manager;
 
-use Ulrack\Services\Common\ServiceFactoryInterface;
-use Ulrack\Services\Common\ServiceCompilerInterface;
+use GrizzIt\Services\Common\Factory\ServiceFactoryInterface;
 use Ulrack\Kernel\Common\InitializableKernelManagerInterface;
+use GrizzIt\Services\Common\Compiler\ServiceCompilerInterface;
 
 interface ServiceManagerInterface extends InitializableKernelManagerInterface
 {
@@ -21,7 +21,7 @@ interface ServiceManagerInterface extends InitializableKernelManagerInterface
      *
      * @return void
      */
-    public function registerService(string $key, $service): void;
+    public function registerService(string $key, mixed $service): void;
 
     /**
      * Retrieves the service compiler.

@@ -23,28 +23,28 @@ class ObjectManager implements ObjectManagerInterface
      *
      * @var StorageInterface
      */
-    private $analysisStorage;
+    private StorageInterface $analysisStorage;
 
     /**
      * Contains the class analyser.
      *
      * @var ClassAnalyserInterface
      */
-    private $classAnalyser;
+    private ClassAnalyserInterface $classAnalyser;
 
     /**
      * Contains the object factory.
      *
      * @var ObjectFactoryInterface
      */
-    private $objectFactory;
+    private ObjectFactoryInterface $objectFactory;
 
     /**
      * Contains the method reflector.
      *
      * @var MethodReflectorInterface
      */
-    private $methodReflector;
+    private MethodReflectorInterface $methodReflector;
 
     /**
      * Constructor.

@@ -12,8 +12,8 @@ use GrizzIt\Cache\Common\CacheInterface;
 use GrizzIt\Storage\Component\ObjectStorage;
 use GrizzIt\Configuration\Common\CompilerInterface;
 use GrizzIt\Configuration\Common\RegistryInterface;
-use Ulrack\Kernel\Common\Manager\CacheManagerInterface;
 use GrizzIt\Configuration\Component\Registry\Registry;
+use Ulrack\Kernel\Common\Manager\CacheManagerInterface;
 use Ulrack\Kernel\Common\Manager\ResourceManagerInterface;
 use Ulrack\Kernel\Common\InitializableKernelManagerInterface;
 use Ulrack\Kernel\Common\Manager\ConfigurationManagerInterface;
@@ -41,35 +41,35 @@ class ConfigurationManager implements ConfigurationManagerInterface
      *
      * @var ResourceManagerInterface
      */
-    private $resourceManager;
+    private ResourceManagerInterface $resourceManager;
 
     /**
      * Contains the configuration compiler.
      *
      * @var CompilerInterface
      */
-    private $configurationCompiler;
+    private CompilerInterface $configurationCompiler;
 
     /**
      * Contains the finalized configuration registry.
      *
      * @var RegistryInterface
      */
-    private $configRegistry;
+    private RegistryInterface $configRegistry;
 
     /**
      * Contains the cache manager.
      *
      * @var CacheManagerInterface
      */
-    private $cacheManager;
+    private CacheManagerInterface $cacheManager;
 
     /**
      * Contains the managers registered to initialization points.
      *
      * @var InitializableKernelManagerInterface[][]
      */
-    private $initPoints;
+    private array $initPoints = [];
 
     /**
      * Constructor.
